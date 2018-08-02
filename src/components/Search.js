@@ -25,19 +25,7 @@ constructor(props) {
 }
 
 }
-setParameters() {
-	const params = {
-		v: '20180802',
-		ll: [this.state.latitude,this.state.longitude].join(','),
-		query:this.state.query,
-		limit: 15,
-		intent: 'browse',
-		radius: '1000',
-		client_id: 'C3FWNCOB31A0JJAQ321PP5IYZVTDCXPDPVQSYLD4EPFWYFYI',
-		client_secret: 'NOTNZFMCB14R1JVE1JYPR13SJCQK1CJOPREN4E1SFDI3ZEW4',
-	};
-	return params;
-}
+
 
 
 
