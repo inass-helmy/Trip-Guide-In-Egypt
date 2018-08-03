@@ -7,28 +7,22 @@ constructor (props) {
   
   this.state = {
     map :null,
-    center: {lat: 40.7413549, lng: -73.9980244},
-    zoom:13,
     Markers : [],
-    showInfoIndex: null
+    showInfoIndex: null,
+    center: this.props.defaultCenter,
+    zoom: this.props.defaultZoom
   }
 }
 componentDidMount = ()=> {
-this.setState({ Markers: [
-              {title: 'Park Ave Penthouse', location: {lat: 40.7713024, lng: -73.9632393}},
-              {title: 'Chelsea Loft', location: {lat: 40.7444883, lng: -73.9949465}},
-              {title: 'Union Square Open Floor Plan', location: {lat: 40.7347062, lng: -73.9895759}},
-              {title: 'East Village Hip Studio', location: {lat: 40.7281777, lng: -73.984377}},
-              {title: 'TriBeCa Artsy Bachelor Pad', location: {lat: 40.7195264, lng: -74.0089934}},
-              {title: 'Chinatown Homey Space', location: {lat: 40.7180628, lng: -73.9961237}},
-
-                ] })
+this.setState({ Markers: this.props.defaultVenues })
+console.log(this.state.center)
 }
   
 onToggleOpen =(index, location) => {
   this.setState({showInfoIndex : index,
-                  center: location})
-                  console.log(this.state.center)
+                  center : location,
+                  zoom: 17
+                  })
 }
 mapMoved = ()=>{
   console.log('mapMpved '+ JSON.stringify(this.state.map.getCenter()))
@@ -58,7 +52,7 @@ mapLoaded = (map)=> {
     } = require("react-google-maps");
 
     const MapWithAMarker = compose(
-      withState('zoom', 'onZoomChange', 13),
+      withState('zoom', 'onZoomChange', this.state.zoom),
       withHandlers(() => {
     const refs = {
       map: undefined,
@@ -84,8 +78,8 @@ mapLoaded = (map)=> {
       ref={props.onMapMounted}
       onDragEnd = {this.mapMoved.bind(this)}
       onZoomChanged={props.onZoomChanged}
-        defaultCenter= {this.state.center}
-        defaultZoom={this.state.zoom}
+        defaultCenter= {props.center}
+        defaultZoom={props.zoom}
       >
 
        { props.Markers.map((marker, index)=> {
@@ -93,7 +87,7 @@ mapLoaded = (map)=> {
         <Marker 
           key = {index}
           position={marker.location}
-          title={marker.title}
+          name={marker.name}
           onClick ={()=> {
             this.onToggleOpen(index, marker.location)
           }}
@@ -101,11 +95,12 @@ mapLoaded = (map)=> {
         { this.state.showInfoIndex== index && 
         <InfoWindow 
         onCloseClick = {()=>{
-          this.setState({center:{lat: 40.7413549, lng: -73.9980244},
+          this.setState({center:this.props.defaultCenter,
+                          zoom: this.props.defaultZoom,
                           showInfoIndex : null})
                           console.log(props.defaultCenter)
         }} >
-        <p>{marker.title}</p>
+        <p>{marker.name}</p>
       </InfoWindow>
       }
 
@@ -123,7 +118,7 @@ mapLoaded = (map)=> {
           mapElement={<div style={{ height: `100%` }} />}
           zoom = {this.state.zoom}
           center = {this.state.center}
-          Markers = {this.state.Markers}
+          Markers = {this.props.defaultVenues}
           selectedPlace = {this.state.selectedPlace}
           onClick = {this.onToggleOPen}
         />
