@@ -81,6 +81,7 @@ class Map extends Component {
               key={index}
               position={marker.location}
               name={marker.name}
+              animation = {window.google.maps.Animation.DROP}
               onClick={() => {
                 this.onToggleOpen(index, marker.location);
               }}
@@ -106,7 +107,7 @@ class Map extends Component {
     return (
       <div>
         <MapWithAMarker
-          googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIQoUyP_jwbeWXoSNcqLPTSdaufshgIDY&v=3.exp&libraries=geometry,drawing,places"
+          googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIQoUyP_jwbeWXoSNcqLPTSdaufshgIDY"
           loadingElement={<div style={{ height: `100%` }} />}
           containerElement={<div style={{ height: `650px` }} />}
           mapElement={<div style={{ height: `100%` }} />}

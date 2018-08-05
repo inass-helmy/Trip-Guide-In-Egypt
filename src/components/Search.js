@@ -1,69 +1,86 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom';
+import sortBy from 'sort-by'
+import escapeRegExp from 'escape-string-regexp'
+import * as FoursquareAPI from '../FoursquareAPI'
 
 export default class Search extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			defaultVenues: this.props.defaultVenues,
+			searchedVenues: [],
 			venuesList : [],
-			searchedVenues: {},
+			hasVenues : false,
+			// searchedVenues: {},
 			query: '',
 		}
-
+		this.searchVenues = this.searchVenues.bind(this)
 	}
 
-	componentDidMount() { 
-		this.setState({venuesList:this.props.venuesList})
-		console.log(this.props.venuesList)
-		// console.log(this.props.venuesList)
-	// let params = 	this.setParameters();
-	// 	console.log(params.limit)
+	componentWillMount() { 
+		this.setState({searchedVenues: this.props.defaultVenues,
+			venuesList : this.props.venuesList})
+		console.log(this.state.searchedVenues)
 
-	// 	fetch(`https://api.foursquare.com/v2/venues/search?ll=${params.ll}&intent=${params.intent}&radius=${params.radius}&query=${params.query}&client_id=${params.client_id}&client_secret=${params.client_secret}&v=${params.v}`)
-	// 	.then(res => {
-	// 	console.log(res)
-	// })
-	// .then(data => ({
-	// 	venues: data.response.venues,
-	// 	latitude: this.state.latitude,
-	// 	longitude: this.state.latitude,
-	// 	query: this.state.query,
-	// }));
+	}
+	updateQuery = (query) => {
+		this.setState({query});
+	   const result = this.searchVenues(query);
+	   this.setState({searchedVenues : result.filteredVenues});
+	   console.log(this.state.searchedVenues)
 
 	}
 
 
-	// searchVenues(){
-	// 	// foursquare.venues.getVenues(this.state.params)
-	//  //      .then(res=> {
-	//  //        this.setState({ items: res.response.venues });
-	//  //        console.log(this.state.items)
-	//  //      });
-	// }
+	searchVenues(query){
+		let filteredVenues
+		let venues = this.props.defaultVenues
+		let hasVenues = false 
+		let result ={}
+		if(venues !== undefined && venues !== null && venues.length > 0) {
+			hasVenues = true;
+			this.setState({hasVenues})
+			venues.sort(sortBy('name'))
+		}
+		if (query) {
+		const match = new RegExp(escapeRegExp(query.trim()), 'i')
+		if (hasVenues) {
+				filteredVenues = venues.filter((venue) => match.test((venue.name)))
+		}	
+		} else {
+				filteredVenues = venues
+		}
 
-	handleSearch(event) {
-		this.setState({
-			query: event.target.value
-		})
-		console.log(this.state.query);
-		console.log(this.state.venuesList)
+		result = {hasVenues :hasVenues	, filteredVenues: filteredVenues}
+		// console.log(result.filteredVenues)	
+		return result
+
+		this.setState({searchedVenues: result.filteredVenues})
+		console.log(this.state.searchedVenues)
+		console.log(query)
 	}
 
 
 	render() {
+		const {defaultVenues} = this.props;
+		const {searchedVenues, hasVenues} = this.state;
+		const displayVenues = hasVenues? searchedVenues : defaultVenues;
+
+
 		return (
 			<div>
 				<input className = 'input-field'
-				onChange={this.handleSearch.bind(this)} type='text' 
-				placeholder='search' />
+				value={this.state.query}
+				onChange={((event) => this.updateQuery(event.target.value))}
+				// onChange={this.handleSearch.bind(this)} type='text' 
+				placeholder='I am looking for' />
 				<button className = 'search-button'
 				// onClick = {this.searchVenues.bind(this)}
-				>search</button>
+				>in cairo</button>
 				<ul className = 'venues'>
-				{this.props.defaultVenues.map((venue)=>{
-						return( <li>{venue.name}</li>)
+				{displayVenues.map((venue)=>{
+						return( <li key ={venue.id} >{venue.name}</li>)
 				})
 			}
 				</ul>
