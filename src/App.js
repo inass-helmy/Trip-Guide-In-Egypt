@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Map from './components/Map'
 import Search from './components/Search'
+import sortBy from 'sort-by'
 import * as FoursquareAPI from './FoursquareAPI'
 import './App.css';
 
@@ -12,22 +13,23 @@ class App extends Component {
       defaultMarkers: [],
       defaultCenter: { lat: 30.0444196, lng: 31.2357116 },
       query: '',
-      defaultZoom: 17,
+      showInfoIndex: null,
+      newCenter:{lat: 30.0444196, lng: 31.2357116},
+      newZoom : 15,
+      defaultZoom: 15,
       veneusList : [],
-      selectedMarkerId : []
-      
+      selectedMarkerId : [],
+      hasVenues: false,
+      userDidSearch: false,
+      searchQuery: '',
+      listOpen: null,
+      searchedVenues: [],
     }
     this.params = {
-      v: '20180802',
       ll: [this.state.defaultCenter.lat, this.state.defaultCenter.lng].join(','),
-      query: this.state.query,
-      limit: 50,
-      intent: 'browse',
-      radius: '1000',
-      // venuesList : [],
-      client_id: 'C3FWNCOB31A0JJAQ321PP5IYZVTDCXPDPVQSYLD4EPFWYFYI',
-      client_secret: 'NOTNZFMCB14R1JVE1JYPR13SJCQK1CJOPREN4E1SFDI3ZEW4',
+      query: this.state.query,   
     }
+    this.userDidSearch = this.userDidSearch.bind(this)
   }
   
   componentDidMount() {
@@ -35,38 +37,35 @@ class App extends Component {
   }
   getDefaultVenues = () => {
     FoursquareAPI.getAllVenues(this.params).then((response) => {
+      response.sort(sortBy('name'))
       this.setState({ defaultMarkers: response,
-                        venuesList:response.map((name,index)=>{return response[index].name})
+                        venuesList:response.map((name,index)=>{return response[index].name}),
+                        hasVenues:true
       })
     });
 
   }
-//   handleSearch(event) {
-// 		this.setState({
-// 			query: event.target.value.toLowerCase(),
-//     })
-//     // infowindow.close();
 
-//     // filter list markers by name of location
-//     const searchedVenues = this.state.defaultMarkers.filter((marker) => {
-//       const match = marker.name.toLowerCase().indexOf(this.state.query) > -1;
-//       // console.log(marker.id)
-//       let selectedMarkerId= []
-//       selectedMarkerId.push(marker.id)
-//       // marker.marker.setVisible(match);
-//       return match;
-// this.setState({defaultMarkers : searchedVenues}) 
-//    })
-//    console.log(this.state.selectedMarkerId)
-// 		// this.params.query = this.state.query;
-// 		console.log(this.state.query);
-// 		console.log(this.params)
-
-// 		// console.log(this.state.venuesList)
-// 	}
-
-
+  onToggleOpen = (venueId, location, infowindowClose) => {
+    const markerLocation = {lat: location.lat, lng: location.lng}
+    this.setState({
+      showInfoIndex: venueId,
+      newCenter: markerLocation,
+      newZoom: 19,
+      infowindowClose
+    });
+    console.log('inside map toggle',this.state.showInfoIndex)
+  };
+userDidSearch(searchedVenues, query) {
+  this.setState({
+searchedVenues,
+searchQuery:query,
+userDidSearch: true
+  })
+  console.log('search list', this.state.searchedVenues)
+}
   render() {
+    const {userDidSearch, defaultMarkers, searchedVenues, searchQuery} = this.state
     return (
       <div className="App">
         <header className="App-header">
@@ -76,29 +75,23 @@ class App extends Component {
           defaultVenues={this.state.defaultMarkers}
           venuesList = {this.state.venuesList}
           query = {this.state.query } 
-          params = {this.state.params}  
-          center = {this.state.defaultCenter}      
-       /* <div>
-       <input className = 'input-field'
-      //  value ={this.state.query}
-				onChange={this.handleSearch.bind(this)} type='text' 
-				placeholder='I am looking for' />
-				<button className = 'search-button'
-				// onClick = {this.searchVenues.bind(this)}
-				>in cairo</button>
-				<ul className = 'venues'>
-				{this.state.defaultMarkers.map((venue)=>{
-						return( <li key ={venue.id} >{venue.name}</li>)
-				})
-			}
-				</ul>
-       </div> */
-       />
+          params = {this.params}  
+          center = {this.state.defaultCenter} 
+          hasVenues = {this.state.hasVenues}  
+          onUserDidSearch = {this.userDidSearch}
+          onToggleOpen = {this.onToggleOpen}
+          />
         <Map 
-          searchedVenues={this.state.venues}
-          defaultVenues={this.state.defaultMarkers}
+          searchedVenues={this.state.searchedVenues}
+          defaultVenues={userDidSearch && searchQuery? searchedVenues : defaultMarkers }
           defaultCenter={this.state.defaultCenter}
           defaultZoom={this.state.defaultZoom}
+          newCenter = {this.state.newCenter}
+          newZoom = {this.state.newZoom}
+          userDidsearch = {this.state.userDidSearch}
+          listOpen ={this.state.listOpen}
+          showInfoIndex = {this.state.showInfoIndex}
+          onToggleOpen = {this.onToggleOpen}
         />
       </div>
     );
