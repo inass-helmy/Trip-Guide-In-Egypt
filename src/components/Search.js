@@ -44,7 +44,6 @@ export default class Search extends Component {
 		const {defaultVenues} = this.props;
 		const {searchedVenues, userDidSearch,query} = this.state;
 		const displayVenues = userDidSearch&&query? searchedVenues : defaultVenues;
-		console.log(displayVenues)
 		return (
 			<div>
 				<input className = 'input-field'

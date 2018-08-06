@@ -3,9 +3,6 @@ import InfowindowContent from "./InfowindowContent";
 class Map extends Component {
   constructor(props) {
     super(props);
-    // this.onToggleOpen = this.onToggleOpen.bind(this);
-    
-
     this.state = {
       map: null,
       center: this.props.defaultCenter,
@@ -15,15 +12,6 @@ class Map extends Component {
       listOpen: this.props.listOpen, 
     };
   }
-  
-  // onToggleOpen = (venueId, location) => {
-  //   this.setState({
-  //     showInfoIndex: venueId,
-  //     center: location,
-  //     zoom: 19
-  //   });
-  //   console.log('inside map toggle',this.state.showInfoIndex)
-  // };
   render() {
     const {
       compose,
@@ -88,20 +76,16 @@ class Map extends Component {
                   })
                 this.props.onToggleOpen(marker.id, marker.location, this.state.infowindowClose);
                 
-                console.log('props', props)
-
               }}
             >
               {this.props.showInfoIndex == marker.id && !marker.showInfo &&(
                 <InfoWindow
                   onCloseClick={() => {
                     marker.showInfo =true
-                    console.log('marker closed')
                     this.setState({
                       center: this.props.defaultCenter,
                       zoom: this.props.defaultZoom,
                     });
-                    console.log(this.props.infowindowClose)
                   }}
                 >
                 <InfowindowContent currentMarker ={marker}/>
