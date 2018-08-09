@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom';
 import sortBy from 'sort-by'
-import escapeRegExp from 'escape-string-regexp'
 import {listOfCities} from '../listOfCities'
 
 export default class Search extends Component {

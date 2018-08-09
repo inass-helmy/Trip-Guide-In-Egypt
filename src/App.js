@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Map from './components/Map'
 import Search from './components/Search'
 import sortBy from 'sort-by'
+import escapeRegExp from 'escape-string-regexp'
 import * as FoursquareAPI from './FoursquareAPI'
 
 import './App.css';
@@ -29,44 +30,9 @@ this.params = {
   ll: [this.state.defaultCenter.lat, this.state.defaultCenter.lng].join(','),
   query: this.state.searchQuery 
 }
-// this.listOfCities = [{
-//   name: 'Cairo',
-//   id: 1,
-// location: { lat: 30.0444196, lng: 31.2357116 }
-// },
-//   {
-//   name : 'Sharm El-Sheikh',
-//   id : 2,
-//   location: {lat: 27.915817, lng : 34.329950} 
-// },
-// {
-//   name: 'Hurghada',
-//   id: 3,
-//   location: {lat: 27.257896, lng : 33.811607}
-
-// },
-// {
-//   name: 'Alexandria',
-//   id: 4,
-//   location: {lat: 31.205753, lng: 29.924526}
-// },
-// {
-//   name: 'Marsa Matrouh',
-//   id: 5,
-//   location: {lat: 31.354343, lng: 27.237316}
-
-// },
-// {
-//   name: 'Luxor',
-//   id: 6,
-//   location: {lat: 25.687243, lng: 32.639637}
-// },
-// ]
 this.mapDraged = this.mapDraged.bind(this);
 this.updateQuery = this.updateQuery.bind(this)
-
   }
-  
   componentDidMount() {
     this.setState({params: this.params})
     this.getDefaultVenues(this.params);
@@ -88,8 +54,9 @@ this.updateQuery = this.updateQuery.bind(this)
     if(query == ''){
       this.clearQuery()
     }else{
+      const match = new RegExp(escapeRegExp(query.trim()), 'i')
       const params=this.params;
-      params.query=query
+      params.query=match
       this.setState({searchQuery: query,
         userDidSearch:true,
         params
