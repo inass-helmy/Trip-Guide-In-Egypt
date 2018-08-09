@@ -6,10 +6,10 @@ class Map extends Component {
     this.state = {
       map: null,
       center: this.props.defaultCenter,
-      newCneter: this.props.defaultCenter,
+      newCenter:this.props.newCenter,
       mapDragged:false,
       zoom: this.props.defaultZoom,
-      listOpen: this.props.listOpen, 
+      listOpen: this.props.listOpen,
     };
   }
   render() {
@@ -27,8 +27,8 @@ class Map extends Component {
     } = require("react-google-maps");
 
     const MapWithAMarker = compose(
-      withState("zoom", "onZoomChange", this.state.zoom),
-      withState("center", 'onmapMoved', this.state.center),
+      withState("zoom", "onZoomChange", this.props.defaultZoom),
+      withState("center", 'onmapMoved', this.props.defaultCenter),
       withHandlers(() => {
         const refs = {
           map: undefined
@@ -41,12 +41,15 @@ class Map extends Component {
             this.setState({ map: refs.map });
           },
           onZoomChanged: ({ onZoomChange }) => () => {
-             onZoomChange(refs.map.getZoom());
+             const newZoom = onZoomChange(refs.map.getZoom());
+             this.setState({zoom: newZoom})
           },
           onmapMoved: ()=> ref => {
-            let newCenter = JSON.stringify(refs.map.getCenter());
-            this.setState({newCenter,
-                            mapDragged: true})
+            let lat = refs.map.getCenter().lat();
+            let lng = refs.map.getCenter().lng()
+            const newCenter = {lat: lat, lng: lng}
+            this.props.mapDraged(newCenter)
+            this.setState({ mapDragged: true})
           }
         };
       }),
@@ -71,21 +74,26 @@ class Map extends Component {
               id ={marker.id}
               animation = {window.google.maps.Animation.DROP}
               onClick={() => {
-                this.setState({center:this.props.newCenter,
-                  zoom: this.props.newZoom,
-                  })
-                this.props.onToggleOpen(marker.id, marker.location, this.state.infowindowClose);
-                
+                console.log('marker clicked')
+                console.log(marker.location)
+                const location = {lat: marker.location.lat, lng: marker.location.lng} 
+                console.log(location)
+                this.props.onToggleOpen(marker.id, location);
+                console.log(location)
+                // this.setState({center : this.props.newCenter,
+                //   zoom: 17,
+                //   })                
               }}
             >
-              {this.props.showInfoIndex == marker.id && !marker.showInfo &&(
+              {this.props.showInfoId == marker.id && !marker.showInfo &&(
                 <InfoWindow
                   onCloseClick={() => {
                     marker.showInfo =true
-                    this.setState({
-                      center: this.props.defaultCenter,
-                      zoom: this.props.defaultZoom,
-                    });
+                    this.props.closeInfoWindow()
+                    // this.setState({
+                    //   center: this.props.defaultCenter,
+                    //   zoom: this.props.defaultZoom
+                    // });
                   }}
                 >
                 <InfowindowContent currentMarker ={marker}/>
@@ -103,11 +111,9 @@ class Map extends Component {
           loadingElement={<div style={{ height: `100%` }} />}
           containerElement={<div style={{ height: `650px` }} />}
           mapElement={<div style={{ height: `100%`, width:'70%', float: 'right'}} />}
-          zoom={this.state.zoom}
-          center={this.state.center}
           Markers={this.props.defaultVenues}
-          selectedPlace={this.state.selectedPlace}
-          onClick={this.onToggleOPen}
+          center = {this.props.defaultCenter}
+          zoom = {this.props.defaultZoom}
         />
       </div>
     );

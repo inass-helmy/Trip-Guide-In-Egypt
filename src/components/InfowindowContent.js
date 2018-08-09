@@ -45,13 +45,15 @@ getMarkerInfo(markerId) {
     render() {
         const markerId = this.state.currentMarker.id
         const {currentMarker} = this.state
-        const markerInfo = this.getMarkerInfo(markerId)
-        // console.log(currentMarker)
-
+        let locationAddress = currentMarker.location.formattedAddress
         return  (
-        <div>
-            <h1>{currentMarker.name}</h1>
-            <p>{currentMarker.location.formattedAddress}</p>
+        <div tabIndex = "0" aria-label="Info window">
+            <h2 tabIndex = "0">{currentMarker.name}</h2>
+            <div>
+                {locationAddress.map((address,key) => {
+            return <div className ="marker-address" key={key}>{address}</div>
+        })}
+            </div>
         </div>
         )
 
