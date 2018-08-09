@@ -79,10 +79,7 @@ class Map extends Component {
                 const location = {lat: marker.location.lat, lng: marker.location.lng} 
                 console.log(location)
                 this.props.onToggleOpen(marker.id, location);
-                console.log(location)
-                // this.setState({center : this.props.newCenter,
-                //   zoom: 17,
-                //   })                
+                console.log(location)                
               }}
             >
               {this.props.showInfoId == marker.id && !marker.showInfo &&(
@@ -90,10 +87,6 @@ class Map extends Component {
                   onCloseClick={() => {
                     marker.showInfo =true
                     this.props.closeInfoWindow()
-                    // this.setState({
-                    //   center: this.props.defaultCenter,
-                    //   zoom: this.props.defaultZoom
-                    // });
                   }}
                 >
                 <InfowindowContent currentMarker ={marker}/>

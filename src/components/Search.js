@@ -11,59 +11,36 @@ export default class Search extends Component {
 		this.state = {
 			deaultVenues: this.props.defaultVenues,
 			venuesList : this.props.venuesList,
-			searchedVenues: [],
+			searchedVenues: this.props.searchedVenues,
 			hasVenues : false,
-			query: '',
+			query: this.props.searchQuery,
 			userDidSearch: this.props.userDidSearch,
 			listOfCities : this.props.listOfCities,
-			city : 'Cairo',
+			city : this.props.city,
 		}
-		this.searchVenues = this.searchVenues.bind(this)
-	}
-	updateQuery = (query) => {
-
-		this.setState({query});
-	   const result = this.searchVenues(query);		
 	}
 
-	searchVenues(query){
-		const searchParams = this.props.params;
-		searchParams.query = this.state.query;
-		FoursquareAPI.getAllVenues(searchParams).then((response) => {
-			this.props.onUserDidSearch(response, query)
-			response.sort(sortBy('name'))
-			this.setState({ searchedVenues: response,
-							  venuesList:response.map((name,index)=>{return response[index].name}),
-							  hasVenues:true,
-							  userDidSearch: true
-			})
-		  });
-	}
-	selectCity(city) {
-	this.setState({query:'',
-		city:city.name})
-	this.props.setCity(city.location)
-	}
 	render() {
-		const {defaultVenues} = this.props;
-		const {searchedVenues, userDidSearch,query} = this.state;
-		const displayVenues = userDidSearch&&query? searchedVenues : defaultVenues;
+		const {displayVenues} = this.props;
+		if (displayVenues == null) {
+			alert('sorry this venue can not be found, please enter a valid venue name or category')
+
+		}
 		return (
 			<div className = 'list-container'>
 				<div >
 				<input className = 'input-field' role="textbox" aria-label = "Enter category or venue name"
-				value={this.state.query}
-				onChange={((event) => this.updateQuery(event.target.value))}
+				value={this.props.searchQuery}
+				onChange={((event) => this.props.updateQuery(event.target.value))}
 				type='text'
 				placeholder='   I am looking for...' />
 				<div className = 'dropdown'>
-				<button className = 'dropbtn'><span>In </span>{this.state.city}</button>
+				<button className = 'dropbtn'><span>In </span>{this.props.city}</button>
 					<div className = 'dropdown-content'  >
 					{this.props.listOfCities.map((city)=>{
 						return(<a href= "#" key = {city.id}
 						role="menu item"
-						onClick ={(event) => this.selectCity(city)}>{city.name}</a>)
-
+						onClick ={(event) => this.props.setCity(city.location, city.name)}>{city.name}</a>)
 					})}
 					</div>
 				</div>

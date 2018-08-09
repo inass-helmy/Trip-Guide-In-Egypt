@@ -21,11 +21,13 @@ class App extends Component {
       searchQuery: '',
       listOpen: null,
       searchedVenues: [],
-      params: {}
+      params: {},
+      city: 'Cairo',
+      hasSearchVenues: false
 }
 this.params = {
   ll: [this.state.defaultCenter.lat, this.state.defaultCenter.lng].join(','),
-  query: '',   
+  query: this.state.searchQuery 
 }
 this.listOfCities = [{
   name: 'Cairo',
@@ -60,53 +62,79 @@ location: { lat: 30.0444196, lng: 31.2357116 }
   location: {lat: 25.687243, lng: 32.639637}
 },
 ]
-
-this.userDidSearch = this.userDidSearch.bind(this);
-this.mapDraged = this.mapDraged.bind(this)
+this.mapDraged = this.mapDraged.bind(this);
+this.updateQuery = this.updateQuery.bind(this)
 
   }
   
   componentDidMount() {
-    
     this.setState({params: this.params})
-    console.log(this.state.params)
     this.getDefaultVenues(this.params);
   }
   
-  setCity = (city) => {
-    const location = {lat: city.lat, lng: city.lng}
+  setCity = (location,name) => {
     console.log('city location', location)
-    console.log('center',this.state.defaultCenter)
-    this.setState({defaultCenter: location,
-      userDidsearch:false
-                  })
-    console.log(this.state.defaultCenter)
-    const params = {
-      ll:[location.lat,location.lng].join(','),
-      query: ''
-    }
-    this.setState({params})
-    console.log(this.state.params)
-
+                  let params = this.params;
+                  params.ll = [location.lat, location.lng].join(',');
+                  this.setState({defaultCenter: location,
+                    newCenter: location,
+                    city: name,
+                    params,
+                                })
     this.getDefaultVenues(params)
-
-// const selectedCity = this.listOfCities.filter(city => city.id == cityId) 
-// const cityLl = selectedCity[0].location;
-// console.log(cityLl)
-// this.params.ll = [this.state.defaultCenter.lat, this.state.defaultCenter.lng].join(','),
-// this.getDefaultVenues();
   }
+
+  updateQuery(query){
+    if(query == ''){
+      this.clearQuery()
+    }else{
+      const params=this.params;
+      params.query=query
+      this.setState({searchQuery: query,
+        userDidSearch:true,
+        params,
+        hasSearchItems:false
+});
+this.getDefaultVenues(params)
+
+    }
+  }
+
+  clearQuery() {
+    const params= this.params
+    params.query = ''
+this.setState({userDidsearch:false,
+                searchQuery: '',
+                params
+                })
+                this.getDefaultVenues(params)
+              }
 
   getDefaultVenues = (params) => {
+    const {userDidSearch,searchQuery} = this.state
     FoursquareAPI.getAllVenues(params).then((response) => {
+      console.log(response)
+      
       response.sort(sortBy('name'))
-      this.setState({ defaultMarkers: response,
-                        venuesList:response.map((name,index)=>{return response[index].name}),
-                        hasVenues:true
-      })
-    });
+      if(userDidSearch&&searchQuery) {
+        this.setState({ searchedVenues : response,
+          venuesList:response.map((name,index)=>{return response[index].name}),
+          hasSearchVenues:true
+})
+if(response ==[]){
+  this.setState({hasSearchVenues: false})
+}
+      }else {
+        this.setState({ defaultMarkers: response,
+          venuesList:response.map((name,index)=>{return response[index].name}),
+          hasVenues:true
 
-  }
+})        
+      }
+      
+    });
+    
+}
 
   onToggleOpen = (venueId, location) => {
     const newLocation = {lat: location.lat, lng: location.lng}
@@ -123,15 +151,8 @@ this.setState({
   newZoom : this.state.defaultZoom
 })
   }
-userDidSearch(searchedVenues, query) {
-  this.setState({
-searchedVenues,
-searchQuery:query,
-userDidSearch: true
-  })
-}
+
 mapDraged(newCenter) {
-  console.log('inside app map draged')
 this.setState({newCenter})
 }
 
@@ -146,13 +167,18 @@ this.setState({newCenter})
           defaultVenues={this.state.defaultMarkers}
           venuesList = {this.state.venuesList}
           query = {this.state.query } 
-          params = {this.params}  
+          params = {this.state.params}  
           defaultCenter = {this.state.defaultCenter} 
           hasVenues = {this.state.hasVenues}  
-          onUserDidSearch = {this.userDidSearch}
           onToggleOpen = {this.onToggleOpen}
           listOfCities = {this.listOfCities}
           setCity = {this.setCity}
+          city = {this.state.city}
+          searchQuery =  {this.state.searchQuery}
+          displayVenues ={userDidSearch && searchQuery? searchedVenues : defaultMarkers }
+          searchedVenues = {this.state.searchedVenues}
+          searchVenues ={this.searchVenues}
+          updateQuery ={this.updateQuery}
           />
         <Map role = "application" tabIndex ="0"
           searchedVenues={this.state.searchedVenues}
