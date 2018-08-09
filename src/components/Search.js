@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom';
 import sortBy from 'sort-by'
 import escapeRegExp from 'escape-string-regexp'
-import * as FoursquareAPI from '../FoursquareAPI'
+import {listOfCities} from '../listOfCities'
 
 export default class Search extends Component {
 
@@ -15,7 +15,6 @@ export default class Search extends Component {
 			hasVenues : false,
 			query: this.props.searchQuery,
 			userDidSearch: this.props.userDidSearch,
-			listOfCities : this.props.listOfCities,
 			city : this.props.city,
 		}
 	}
@@ -33,7 +32,7 @@ export default class Search extends Component {
 				<div className = 'dropdown'>
 				<button className = 'dropbtn'><span>In </span>{this.props.city}</button>
 					<div className = 'dropdown-content'  >
-					{this.props.listOfCities.map((city)=>{
+					{listOfCities.map((city)=>{
 						return(<a href= "#" key = {city.id}
 						role="menu item"
 						onClick ={(event) => this.props.setCity(city.location, city.name)}>{city.name}</a>)
