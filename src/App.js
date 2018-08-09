@@ -22,8 +22,7 @@ class App extends Component {
       listOpen: null,
       searchedVenues: [],
       params: {},
-      city: 'Cairo',
-      hasSearchVenues: false
+      city: 'Cairo'
 }
 this.params = {
   ll: [this.state.defaultCenter.lat, this.state.defaultCenter.lng].join(','),
@@ -92,11 +91,9 @@ this.updateQuery = this.updateQuery.bind(this)
       params.query=query
       this.setState({searchQuery: query,
         userDidSearch:true,
-        params,
-        hasSearchItems:false
+        params
 });
-this.getDefaultVenues(params)
-
+      this.getDefaultVenues(params)
     }
   }
 
@@ -111,30 +108,24 @@ this.setState({userDidsearch:false,
               }
 
   getDefaultVenues = (params) => {
-    const {userDidSearch,searchQuery} = this.state
     FoursquareAPI.getAllVenues(params).then((response) => {
-      console.log(response)
-      
+      const {userDidSearch,searchQuery} = this.state
       response.sort(sortBy('name'))
       if(userDidSearch&&searchQuery) {
         this.setState({ searchedVenues : response,
           venuesList:response.map((name,index)=>{return response[index].name}),
-          hasSearchVenues:true
+          hasVenues:true
 })
-if(response ==[]){
-  this.setState({hasSearchVenues: false})
-}
       }else {
         this.setState({ defaultMarkers: response,
           venuesList:response.map((name,index)=>{return response[index].name}),
           hasVenues:true
-
-})        
+})
       }
       
     });
-    
-}
+
+  }
 
   onToggleOpen = (venueId, location) => {
     const newLocation = {lat: location.lat, lng: location.lng}

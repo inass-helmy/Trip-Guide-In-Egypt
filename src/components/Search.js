@@ -22,10 +22,6 @@ export default class Search extends Component {
 
 	render() {
 		const {displayVenues} = this.props;
-		if (displayVenues == null) {
-			alert('sorry this venue can not be found, please enter a valid venue name or category')
-
-		}
 		return (
 			<div className = 'list-container'>
 				<div >
