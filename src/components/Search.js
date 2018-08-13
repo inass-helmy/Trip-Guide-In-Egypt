@@ -50,9 +50,10 @@ export default class Search extends Component {
 				</div>
 				<ul className = 'venues'
 				role ="menu"
+				tabIndex="0"
 				arial-label="List of neighbourhood venues">
 				{displayVenues.map((venue)=>{
-						return( <li className="list-item" role="menu item"
+						return( <li className="list-item" role="menu item" tabIndex="1"
 							key ={venue.id} 
 						    onClick ={(event) => this.props.onToggleOpen(venue.id, venue.location)}>{venue.name}</li>)
 				})

@@ -124,7 +124,7 @@ this.setState({barsShow :cssClass})
       <div className="App" role ="main">
         <header className="App-header">          
 
-          <h1 className="App-title"><span className = 'bars' onClick = {this.toggleBars.bind(this)}></span>
+          <h1 className="App-title"><span className = 'bars' onClick = {this.toggleBars.bind(this)} aria-labEL="open search menu" tabIndex="0"></span>
             Trip Guide In Egypt</h1>
 
         </header>
