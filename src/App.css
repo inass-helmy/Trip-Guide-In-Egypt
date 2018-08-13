@@ -13,6 +13,27 @@
    width:100%;
     float: right;
 }
+.App-footer {
+  height: 50px;
+  width: 100%;
+  display: block;
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: italic;
+  text-align: center;
+  background-color: #3e8e41;
+  color: white;
+  line-height: 3em;
+}
+.about-app{
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: italic;
+  text-align: center;
+  background-color: #3e8e41;
+  color: white;
+  line-height: 3em;
+}
 .list-container {
 	  height: 90%; 
     width: 50%; 

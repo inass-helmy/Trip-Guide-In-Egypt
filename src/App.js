@@ -159,6 +159,7 @@ this.setState({barsShow :cssClass})
           closeInfoWindow = {this.closeInfoWindow}
           mapDraged = {this.mapDraged}
         />
+        <footer className="App-footer">Created By @Enas Samir, Integrated with Google-Maps and Foursquare API's</footer>
       </div>
     );
   }
