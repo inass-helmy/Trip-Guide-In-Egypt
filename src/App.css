@@ -3,27 +3,45 @@
 }
 
 .App-header {
-  background-color: #222;
+  background-color: #3e8e41;
   height: 50px;
   padding: 10px;
   color: white;
 }
+.map-element {
+  height: 100%;
+   width:100%;
+    float: right;
+}
 .list-container {
 	  height: 90%; 
-    width: 30%; 
+    width: 50%; 
     position: fixed; 
-    z-index: 1; 
+    z-index: 1;
     top: 70px;  
     left: 0;
     background-color: white; 
     overflow-x: hidden; 
     padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    
 }
+.hidden {
+  visibility: hidden;
+
+}
+.show {
+  visibility: visible;
+}
+
 .venues {
   list-style: none;
   text-align: left;
   padding-left: 10px;
   font-size: .9em;
+  display: flex;
+  flex-direction: column;
 }
 .list-item{
   padding:10px;
@@ -56,7 +74,7 @@ li:hover {
   border-color: rgba(0, 0, 0, 0.048);
   font-weight: 500;
 
-  width: 170px;
+  width: 150px;
   float: left;
   margin-left: 20px
 
@@ -67,13 +85,10 @@ li:hover {
   color: rgba(0, 0, 0, 0.699);
   border-width: 1px;
   border-style: inset;
-
   border-color: rgba(0, 0, 0, 0.164);
   font-weight: 500;
-
   padding: 4px;
   font-size: 14px;
-  /* border: none; */
   width: 140px;
   height: 30px;
   cursor: pointer;
@@ -117,4 +132,64 @@ li:hover {
   font-family: "Times New Roman", Times, serif;
   font-size: 1.1em;
 
+}
+.bars {
+  background: black;  
+  float: left;
+  position: relative;
+  height: 5px;
+  width: 30px;
+
+}
+.bars:before {
+  background: #000;
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 0;
+  width: 30px;
+  height: 5px;
+}
+.bars:after {
+  background: #000;
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 30px;
+  height: 5px;
+}
+
+@media screen and (min-width: 750px) {
+  .bars{
+visibility: hidden; 
+ }
+ .list-container {
+   visibility: visible;
+   width: 30%;
+ }
+ .map-element {
+   width: 70%;
+ }
+}
+
+@media screen and (max-width: 1100px) {
+  .user-action {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 50px;
+}
+.dropbtn {
+  width: 185px;
+  margin-top: 5%;
+}
+.input-field {
+  width: 175px;
+  margin-left: 0;
+}
+.dropdown-content {
+  width: 170px;
+}
 }

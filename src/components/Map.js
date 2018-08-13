@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import InfowindowContent from "./InfowindowContent";
+import { lifecycle } from "recompose";
 class Map extends Component {
   constructor(props) {
     super(props);
@@ -44,14 +45,25 @@ class Map extends Component {
              const newZoom = onZoomChange(refs.map.getZoom());
              this.setState({zoom: newZoom})
           },
-          onmapMoved: ()=> ref => {
-            let lat = refs.map.getCenter().lat();
-            let lng = refs.map.getCenter().lng()
-            const newCenter = {lat: lat, lng: lng}
-            this.props.mapDraged(newCenter)
-            this.setState({ mapDragged: true})
-          }
         };
+      }),
+      lifecycle({
+        componenetDidMount(){
+            const bounds = new window.google.maps.LatLngBounds();
+
+                this.state.map.props.children.forEach((child) => {
+                    console.log(child.type)
+                    if (child.type === Marker) {
+                        bounds.extend(new window.google.maps.LatLng(child.props.position.lat, child.props.position.lng));
+                    }
+                })
+                this.state.map.fitBounds(bounds);  
+            },
+
+        componentDidCatch(error, info) {
+                console.log(error)
+                alert("Error Occured while trying to render google maps API Please check your credentials")
+            }
       }),
 
       withScriptjs,
@@ -59,9 +71,7 @@ class Map extends Component {
     )(props => (
       <GoogleMap
       ref={props.onMapMounted}
-      onDragEnd = {props.onmapMoved}
       onZoomChanged={props.onZoomChanged}
-      onmapMoved={props.onmapMoved}
       defaultCenter= {props.center}
       defaultZoom={props.zoom}
       >
@@ -75,7 +85,7 @@ class Map extends Component {
               animation = {window.google.maps.Animation.DROP}
               onClick={() => {
                 console.log('marker clicked')
-                console.log(marker.location)
+                console.log(marker)
                 const location = {lat: marker.location.lat, lng: marker.location.lng} 
                 console.log(location)
                 this.props.onToggleOpen(marker.id, location);
@@ -85,7 +95,6 @@ class Map extends Component {
               {this.props.showInfoId == marker.id && !marker.showInfo &&(
                 <InfoWindow
                   onCloseClick={() => {
-                    marker.showInfo =true
                     this.props.closeInfoWindow()
                   }}
                 >
@@ -103,7 +112,7 @@ class Map extends Component {
           googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIQoUyP_jwbeWXoSNcqLPTSdaufshgIDY"
           loadingElement={<div style={{ height: `100%` }} />}
           containerElement={<div style={{ height: `650px` }} />}
-          mapElement={<div style={{ height: `100%`, width:'70%', float: 'right'}} />}
+          mapElement={<div className = "map-element" />}
           Markers={this.props.defaultVenues}
           center = {this.props.defaultCenter}
           zoom = {this.props.defaultZoom}

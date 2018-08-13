@@ -6,7 +6,8 @@ constructor(props) {
     super(props)
     this.state = {
         currentMarker : this.props.currentMarker,
-        markerPhoto:null
+        markerPhoto:null,
+        markerInfo:null
     }
 }
 

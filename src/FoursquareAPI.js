@@ -8,8 +8,8 @@ if (!token)
 
 	const auths = {
 	limit: 50,
-      intent: 'browse',
-	  radius: '2000',
+    intent: 'browse',
+	  radius: '5000',
 	  client_id : 'C3FWNCOB31A0JJAQ321PP5IYZVTDCXPDPVQSYLD4EPFWYFYI',
 	  client_secret : 'NOTNZFMCB14R1JVE1JYPR13SJCQK1CJOPREN4E1SFDI3ZEW4',
 	  version : '20180802'

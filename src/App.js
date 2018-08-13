@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import Map from './components/Map'
 import Search from './components/Search'
@@ -13,9 +14,9 @@ class App extends Component {
     this.state = {
       defaultMarkers: [],
       defaultCenter: { lat: 30.0444196, lng: 31.2357116 },
-      defaultZoom: 14,
+      defaultZoom: 13,
       newCenter:{lat: 30.0444196, lng: 31.2357116},
-      newZoom : 14,
+      newZoom : 13,
       veneusList : [],
       showInfoId: null,
       hasVenues: false,
@@ -24,13 +25,13 @@ class App extends Component {
       listOpen: null,
       searchedVenues: [],
       params: {},
-      city: 'Cairo'
+      city: 'Cairo',
+      barsShow: 'hidden'
 }
 this.params = {
   ll: [this.state.defaultCenter.lat, this.state.defaultCenter.lng].join(','),
   query: this.state.searchQuery 
 }
-this.mapDraged = this.mapDraged.bind(this);
 this.updateQuery = this.updateQuery.bind(this)
   }
   componentDidMount() {
@@ -39,6 +40,7 @@ this.updateQuery = this.updateQuery.bind(this)
   }
   
   setCity = (location,name) => {
+    this.closeInfoWindow()
     console.log('city location', location)
                   let params = this.params;
                   params.ll = [location.lat, location.lng].join(',');
@@ -99,30 +101,35 @@ this.setState({userDidsearch:false,
     const newLocation = {lat: location.lat, lng: location.lng}
     console.log(newLocation)
     this.setState({
-      showInfoId: venueId,
+    showInfoId: venueId,
     newCenter : newLocation,
-    newZoom: 17,
+    newZoom: 16,
     });
   };
   closeInfoWindow =() =>{
 this.setState({
   newCenter: this.state.defaultCenter,
-  newZoom : this.state.defaultZoom
+  newZoom : this.state.defaultZoom,
+  showInfoId:null
 })
   }
-
-mapDraged(newCenter) {
-this.setState({newCenter})
-}
+  toggleBars() {
+let cssClass = (this.state.barsShow === 'show')?'hidden':'show';
+this.setState({barsShow :cssClass})
+ }
 
   render() {
     const {userDidSearch, defaultMarkers, searchedVenues, searchQuery} = this.state
     return (
       <div className="App" role ="main">
-        <header className="App-header">
-          <h1 className="App-title">Neighborhood Map</h1>
+        <header className="App-header">          
+
+          <h1 className="App-title"><span className = 'bars' onClick = {this.toggleBars.bind(this)}></span>
+            Trip Guide In Egypt</h1>
+
         </header>
-        <Search className="venues"
+
+        <Search className = 'venues'
           defaultVenues={this.state.defaultMarkers}
           venuesList = {this.state.venuesList}
           query = {this.state.query } 
@@ -138,6 +145,7 @@ this.setState({newCenter})
           searchedVenues = {this.state.searchedVenues}
           searchVenues ={this.searchVenues}
           updateQuery ={this.updateQuery}
+          barsShow = {this.state.barsShow}
           />
         <Map role = "application" tabIndex ="0"
           searchedVenues={this.state.searchedVenues}

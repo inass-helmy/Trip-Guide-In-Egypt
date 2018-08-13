@@ -20,9 +20,18 @@ export default class Search extends Component {
 
 	render() {
 		const {displayVenues} = this.props;
+		console.log(this.props.barsShow)
+		// let menuClasses = className({
+		// 	'list-container' :true,
+		// 	 'visible' :this.props.barsShow
+
+		// })
 		return (
+			<div className = {this.props.barsShow}>
+			
 			<div className = 'list-container'>
-				<div >
+				<div className='user-action'>
+
 				<input className = 'input-field' role="textbox" aria-label = "Enter category or venue name"
 				value={this.props.searchQuery}
 				onChange={((event) => this.props.updateQuery(event.target.value))}
@@ -49,6 +58,7 @@ export default class Search extends Component {
 				})
 			}
 				</ul>
+			</div>
 			</div>
 		)
 
