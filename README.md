@@ -3,7 +3,7 @@
 
 - This project is part of the Google/Udacity Nanodegree scholarship.
 - This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
-- The project itegrates google maps api with Foursquare api using react-google-maps library
+- The project integrates with google-maps and Foursquare api's using react-google-maps library.
 
  ### Contents:
   1. [Description](#1-description).
@@ -13,8 +13,8 @@
   
  ## 1. Description
   
-In this app the user can get information about places to visit in some cities ofegypt and the search results is coverd some categories like hotels,cafes,restaurants,museums,and entertainment places.
-Also inside a certain city user can search for a certain place or category and when click on the marker or the item in the list an information bar appears including information about this place.
+In this app the user can get information about places to visit in some cities of Egypt and the search results is covering some categories like hotels,cafes,restaurants,museums,and entertainment places.
+Also inside a certain city user can search for a certain place or category and when click on the marker or the item in the list an information window appears including information about this place and set the center of the map to be this marker location and also zoom in for more clarity.
 As a feature in this app... the user can add any Egypt's city he wants into the file  `listOfCities` inside the `src` folder, all what he needs is to add the city name and its latitude and longitude,then it will be automatically added to the search menu.
  ## 2. Instructions
    In order to have this project up and running you need to :
@@ -31,4 +31,4 @@ As a feature in this app... the user can add any Egypt's city he wants into the 
   - It uses google maps api as a mapping system.
   - Offline available in production mood not development mode.
 
-  ## This application is made by Enas Samir... I hope you enjoy it :)
+  #### This application is made by Enas Samir... I hope you enjoy it :)
