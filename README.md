@@ -29,6 +29,6 @@ As a feature in this app... the user can add any Egypt's city he wants into the 
   - This project uses `React` `and react-googl-maps` libraries.
   - This app uses the fetch method with the Foursquare api to get information about venues.
   - It uses google maps api as a mapping system.
-  - Offline available in production mood not development mode.
+  - Offline available in production mode not development mode.
 
   #### This application is made by Enas Samir... I hope you enjoy it :)
