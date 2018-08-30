@@ -22,7 +22,7 @@ As a feature in this app... the user can add any Egypt's city he wants into the 
    - start npm using "npm-start"
         
  ## 3. Project page
-  - https://github.com/inass-helmy/Trip-Guide-In-Egypt
+  - https://inass-helmy.github.io/Trip-Guide-In-Egypt/
 
  ## 4. Dependencies
   - Code is written in `HTML`, `CSS` ,`jsx` and `JavaScript`.
