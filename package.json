@@ -2,7 +2,7 @@
   "name": "neighborhood-map-nd",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://inass-helmy.github.io/Trip-Guide-In-Egypt",
+  "homepage": "http://inass-helmy.github.io/Trip-Guide-In-Egypt/",
   "dependencies": {
     "escape-string-regexp": "^1.0.5",
     "react": "^16.4.1",
