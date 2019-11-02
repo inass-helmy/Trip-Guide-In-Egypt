@@ -32,6 +32,7 @@ class App extends Component {
       ll: [this.state.defaultCenter.lat, this.state.defaultCenter.lng].join(','),
       query: this.state.searchQuery
     }
+    this.updateQuery = this.updateQuery.bind(this)
   }
   componentDidMount() {
     this.setState({ params: this.params })
@@ -128,7 +129,7 @@ class App extends Component {
       <div className="App" role="main">
         <header className="App-header">
 
-          <h1 className="App-title"><span className='bars' onClick={this.toggleBars.bind(this)} aria-labEL="open search menu" tabIndex="0"></span>
+          <h1 className="App-title"><span className='bars' onClick={this.toggleBars.bind(this)} aria-labeL="open search menu" tabIndex="0"></span>
             Trip Guide In Egypt</h1>
 
         </header>

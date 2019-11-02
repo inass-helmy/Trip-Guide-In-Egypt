@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom';
-import sortBy from 'sort-by'
 import { listOfCities } from '../listOfCities'
 
 export default class Search extends Component {
@@ -20,12 +18,7 @@ export default class Search extends Component {
 
 	render() {
 		const { displayVenues } = this.props;
-		console.log(this.props.barsShow)
-		// let menuClasses = className({
-		// 	'list-container' :true,
-		// 	 'visible' :this.props.barsShow
-
-		// })
+	
 		return (
 			<div className={this.props.barsShow}>
 
