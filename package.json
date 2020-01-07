@@ -4,9 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "deploy": "gh-pages -d build",
     "escape-string-regexp": "^1.0.5",
-    "gh-pages": "^1.2.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-foursquare": "^1.0.3",
@@ -21,5 +19,23 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "gh-pages": "^2.2.0"
   }
 }
