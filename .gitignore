@@ -9,6 +9,9 @@
 # production
 /build
 
+#credintials
+/src/credintials
+
 # misc
 .DS_Store
 .env.local
@@ -18,4 +21,4 @@
 
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
+yarn-error.log
