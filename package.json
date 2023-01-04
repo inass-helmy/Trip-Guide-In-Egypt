@@ -9,7 +9,7 @@
     "react-dom": "^16.4.1",
     "react-foursquare": "^1.0.3",
     "react-google-maps": "^9.4.5",
-    "react-scripts": "1.1.4",
+    "react-scripts": "5.0.1",
     "sort-by": "^1.2.0"
   },
   "scripts": {
